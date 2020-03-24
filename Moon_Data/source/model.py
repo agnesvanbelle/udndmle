@@ -9,12 +9,19 @@ class SimpleNet(nn.Module):
     def __init__(self, input_dim, hidden_dim, output_dim):
         '''Defines layers of a neural network.
            :param input_dim: Number of input features
-           :param hidden_dim: Size of hidden layer(s)
+           :param hidden_dim: size of hidden layer(s)
            :param output_dim: Number of outputs
          '''
         super(SimpleNet, self).__init__()
+                
+        self.fc1 = nn.Linear(input_dim, hidden_dim)
+                  
+        self.fc2 = nn.Linear(hidden_dim, output_dim)
         
-        # define all layers, here
+        self.dropout = nn.Dropout(0.3)
+        
+        self.sm = nn.Sigmoid()
+        
         
     
     ## TODO: Define the feedforward behavior of the network
@@ -24,5 +31,12 @@ class SimpleNet(nn.Module):
            :return: A single, sigmoid activated value
          '''
         # your code, here
+        
+        x = F.relu(self.fc1(x))
+        x = self.dropout(x)
+        
+        x = self.fc2(x)
+        
+        x = self.sm(x)
         
         return x
